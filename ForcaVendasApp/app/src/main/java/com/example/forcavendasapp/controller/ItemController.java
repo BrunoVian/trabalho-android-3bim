@@ -34,9 +34,10 @@ public class ItemController {
     public Item findByIdItem(int id){
         return ItemDao.getInstancia(context).getById(id);}
 
-    public String validaItem(String codigo, String descricao, String vlrUnitario, String unMedida){
+    public String validaItem(String descricao, double vlrUnitario, String unMedida){
         String mensagem = "";
-        if(codigo == null || codigo.isEmpty()){
+
+        /*if(codigo == null || codigo.isEmpty()){
             mensagem += "Codigo do item deve ser informado!\n";
         }else{
             try{
@@ -47,11 +48,11 @@ public class ItemController {
                 mensagem += "Codigo do item deve ser número válido!\n";
             }
 
-        }
+        }*/
         if(descricao == null || descricao.isEmpty()){
             mensagem += "Descrição do item deve ser informado!\n";
         }
-        if(vlrUnitario == null || vlrUnitario.isEmpty()){
+        if(String.valueOf(vlrUnitario) == null || String.valueOf(vlrUnitario).isEmpty()){
             mensagem += "Valor Unitário do item deve ser informado!\n";
         }
         if(unMedida == null || unMedida.isEmpty()){

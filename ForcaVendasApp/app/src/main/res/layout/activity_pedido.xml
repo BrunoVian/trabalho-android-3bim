@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/fundo"
-    tools:context=".view.CadastroItem">
+    tools:context=".view.Pedido">
 
     <include layout="@layout/activity_toolbar"></include>
 
@@ -23,7 +23,7 @@
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:textSize="25dp"
-            android:text="Pedido"
+            android:text="Novo Item"
             android:layout_marginBottom="25dp"/>
 
         <TextView

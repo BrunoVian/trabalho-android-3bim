@@ -12,13 +12,22 @@
         android:theme="@style/Theme.ForcaVendasApp"
         tools:targetApi="31">
         <activity
-            android:name=".CadastroItem"
+            android:name=".view.Pedido"
             android:exported="false" />
         <activity
-            android:name=".Toolbar"
+            android:name=".view.CadastroEndereco"
+            android:exported="false" />
+        <activity
+            android:name=".view.CadastroCliente"
+            android:exported="false" />
+        <activity
+            android:name=".view.CadastroItem"
+            android:exported="false" />
+        <activity
+            android:name=".view.Toolbar"
             android:exported="false"
             android:label="@string/title_activity_toolbar"
-            android:theme="@style/Theme.ForcaVendasApp.NoActionBar" />
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".view.MainActivity"
             android:exported="true">

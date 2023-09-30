@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/fundo"
-    tools:context=".view.CadastroItem">
+    tools:context=".view.CadastroCliente">
 
     <include layout="@layout/activity_toolbar"></include>
 
@@ -23,19 +23,19 @@
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:textSize="25dp"
-            android:text="Pedido"
+            android:text="Novo Cliente"
             android:layout_marginBottom="25dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Descrição" />
+            android:text="Nome:" />
 
         <EditText
-            android:id="@+id/edDescricao"
+            android:id="@+id/edNome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Informe a descrição..."
+            android:hint="Informe o nome do cliente..."
             android:layout_marginBottom="15dp"
             android:inputType="text"
             android:background="@drawable/bordered_background"
@@ -44,31 +44,47 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Unidade de Medida"
+            android:text="CPF:"
 
             />
 
         <EditText
-            android:id="@+id/edUnidadeMedida"
+            android:id="@+id/edCpf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:background="@drawable/bordered_background"
-            android:hint="Informe a unidade de medida..." />
+            android:hint="Informe o CPF do Cliente..."
+            />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Valor do Item"
+            android:text="Data de Nascimento"
             />
 
         <EditText
-            android:id="@+id/edVlrItem"
+            android:id="@+id/edDataNascimento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/bordered_background"
-            android:hint="Informe o valor..."
-            android:inputType="numberDecimal" />
+            android:hint="Informe a Data de Nascimento..."
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selecione o Endereço"
+            />
+
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spEndereco"
+            android:background="@drawable/spinner_custom">
+        </Spinner>
 
         <LinearLayout
             android:layout_marginTop="50dp"

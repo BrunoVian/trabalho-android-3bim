@@ -52,7 +52,6 @@ public class EnderecoDao implements GenericDao<Endereco> {
     public long insert(Endereco obj) {
         try {
             ContentValues valores = new ContentValues();
-            valores.put("CODIGO", obj.getCodigo());
             valores.put("LOGRADOURO", obj.getLogradouro());
             valores.put("NUMERO", obj.getNumero());
             valores.put("BAIRRO", obj.getBairro());

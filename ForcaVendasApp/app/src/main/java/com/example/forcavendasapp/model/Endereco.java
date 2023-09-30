@@ -21,6 +21,14 @@ public class Endereco {
         this.uf = uf;
     }
 
+    public Endereco(String logradouro, int numero, String bairro, String cidade, String uf) {
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.uf = uf;
+    }
+
     public int getCodigo() {
         return codigo;
     }
@@ -67,5 +75,10 @@ public class Endereco {
 
     public void setUf(String uf) {
         this.uf = uf;
+    }
+
+    @Override
+    public String toString() {
+        return "Cód" + codigo + " | " + logradouro;
     }
 }

@@ -4,10 +4,10 @@ public class Item {
 
     private int codigo;
     private String descricao;
-    private int vlrUnit;
+    private double vlrUnit;
     private String unMedida;
 
-    public Item(int codigo, String descricao, int vlrUnit, String unMedida) {
+    public Item(int codigo, String descricao, double vlrUnit, String unMedida) {
         this.codigo = codigo;
         this.descricao = descricao;
         this.vlrUnit = vlrUnit;
@@ -33,11 +33,11 @@ public class Item {
         this.descricao = descricao;
     }
 
-    public int getVlrUnit() {
+    public double getVlrUnit() {
         return vlrUnit;
     }
 
-    public void setVlrUnit(int vlrUnit) {
+    public void setVlrUnit(double vlrUnit) {
         this.vlrUnit = vlrUnit;
     }
 

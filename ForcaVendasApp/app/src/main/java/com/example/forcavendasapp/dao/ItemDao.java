@@ -52,7 +52,6 @@ public class ItemDao implements GenericDao<Item> {
     public long insert(Item obj) {
         try {
             ContentValues valores = new ContentValues();
-            valores.put("CODIGO", obj.getCodigo());
             valores.put("DESCRICAO", obj.getDescricao());
             valores.put("VLRUNIT", obj.getVlrUnit());
             valores.put("UNMEDIDA", obj.getUnMedida());

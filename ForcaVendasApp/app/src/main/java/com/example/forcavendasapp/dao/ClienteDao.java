@@ -22,7 +22,7 @@ public class ClienteDao implements GenericDao<Cliente> {
     private SQLiteDatabase bd;
 
     //nome das colunas da tabela
-    private String[] colunas = {"CODIGO", "NOME", "CPF", "DTNASC", "CODENDERECO"};
+    private String[] colunas = {"CODIGO", "NOME", "CPF", "DTNASCIMENTO", "CODENDERECO"};
 
     //nome da tabela
     private String tableName = "CLIENTE";
@@ -51,10 +51,9 @@ public class ClienteDao implements GenericDao<Cliente> {
     public long insert(Cliente obj) {
         try {
             ContentValues valores = new ContentValues();
-            valores.put("CODIGO", obj.getCodigo());
             valores.put("NOME", obj.getNome());
             valores.put("CPF", obj.getCpf());
-            valores.put("DTNASC", obj.getDtNasc());
+            valores.put("DTNASCIMENTO", obj.getDtNasc());
             valores.put("CODENDERECO", obj.getCodEndereco());
 
             return bd.insert(tableName, null, valores);
@@ -70,7 +69,7 @@ public class ClienteDao implements GenericDao<Cliente> {
             ContentValues valores = new ContentValues();
             valores.put("NOME", obj.getNome());
             valores.put("CPF", obj.getCpf());
-            valores.put("DTNASC", obj.getDtNasc());
+            valores.put("DTNASCIMENTO", obj.getDtNasc());
             valores.put("CODENDERECO", obj.getCodEndereco());
 
             String[] identificador = {String.valueOf(obj.getCodigo())};

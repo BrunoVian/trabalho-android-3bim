@@ -10,6 +10,13 @@ public class Cliente {
     private String dtNasc;
     private int codEndereco;
 
+    public Cliente(String nome, String cpf, String dtNasc, int codEndereco) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dtNasc = dtNasc;
+        this.codEndereco = codEndereco;
+    }
+
     public Cliente(int codigo, String nome, String cpf, String dtNasc, int codEndereco) {
         this.codigo = codigo;
         this.nome = nome;

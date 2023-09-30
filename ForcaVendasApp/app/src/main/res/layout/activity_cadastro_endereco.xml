@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/fundo"
-    tools:context=".view.CadastroItem">
+    tools:context=".view.CadastroEndereco">
 
     <include layout="@layout/activity_toolbar"></include>
 
@@ -23,19 +23,48 @@
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:textSize="25dp"
-            android:text="Pedido"
+            android:text="Novo Endereco"
             android:layout_marginBottom="25dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/edCodigo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Informe o codigo..."
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:inputType="text"
+                android:background="@drawable/bordered_background"
+                />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:text="Buscar Código"
+                android:textColor="@color/white"
+                android:background="@drawable/button_customizado"/>
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Descrição" />
+            android:text="Logradouro:" />
 
         <EditText
-            android:id="@+id/edDescricao"
+            android:id="@+id/edLogradouro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Informe a descrição..."
+            android:hint="Informe o logradouro..."
             android:layout_marginBottom="15dp"
             android:inputType="text"
             android:background="@drawable/bordered_background"
@@ -44,31 +73,64 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Unidade de Medida"
+            android:text="Número:"
 
             />
 
         <EditText
-            android:id="@+id/edUnidadeMedida"
+            android:id="@+id/edNumero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:background="@drawable/bordered_background"
-            android:hint="Informe a unidade de medida..." />
+            android:hint="Informe o Número..."
+            />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Valor do Item"
+            android:text="Informe o Bairro"
             />
 
         <EditText
-            android:id="@+id/edVlrItem"
+            android:id="@+id/edBairro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/bordered_background"
-            android:hint="Informe o valor..."
-            android:inputType="numberDecimal" />
+            android:hint="Informe o Bairro..."
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Informe a cidade"
+            />
+
+        <EditText
+            android:id="@+id/edCidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/bordered_background"
+            android:hint="Informe a Cidade..."
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Informe a UF"
+            />
+
+        <EditText
+            android:id="@+id/edUf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/bordered_background"
+            android:hint="Informe a UF..."
+            />
+
 
         <LinearLayout
             android:layout_marginTop="50dp"

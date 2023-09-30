@@ -34,20 +34,9 @@ public class ClienteController {
     public Cliente findByIdCliente(int id){
         return ClienteDao.getInstancia(context).getById(id);}
 
-    public String validaCliente(String codigo, String nome, String cpf, String dtNasc, String codEndereco){
+    public String validaCliente(String codigo, String nome, String cpf, String dtNasc, int codEndereco){
         String mensagem = "";
-        if(codigo == null || codigo.isEmpty()){
-            mensagem += "Codigo do cliente deve ser informado!\n";
-        }else{
-            try{
-                if(Integer.parseInt(codigo) <= 0){
-                    mensagem += "Codigo do cliente deve ser maior que zero!\n";
-                }
-            }catch(NumberFormatException ex){
-                mensagem += "Codigo do cliente deve ser número válido!\n";
-            }
 
-        }
         if(nome == null || nome.isEmpty()){
             mensagem += "Nome do cliente deve ser informado!\n";
         }
@@ -57,7 +46,7 @@ public class ClienteController {
         if(dtNasc == null || dtNasc.isEmpty()){
             mensagem += "Data de Nascimento do cliente deve ser informado!\n";
         }
-        if(codEndereco == null || codEndereco.isEmpty()){
+        if(codEndereco == 0){
             mensagem += "Codigo do Endereco do cliente deve ser informado!\n";
         }
         return mensagem;
