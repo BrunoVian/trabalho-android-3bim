@@ -79,6 +79,6 @@ public class Endereco {
 
     @Override
     public String toString() {
-        return "Cód" + codigo + " | " + logradouro;
+        return "Cód" + codigo + " - Logradouro: " + logradouro;
     }
 }

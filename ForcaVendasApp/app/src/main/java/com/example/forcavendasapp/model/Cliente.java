@@ -67,4 +67,9 @@ public class Cliente {
     public void setCodEndereco(int codEndereco) {
         this.codEndereco = codEndereco;
     }
+
+    @Override
+    public String toString() {
+        return "Nome: " + nome + " - CPF: " + cpf;
+    }
 }

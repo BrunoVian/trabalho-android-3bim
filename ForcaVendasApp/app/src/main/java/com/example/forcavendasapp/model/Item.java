@@ -48,4 +48,9 @@ public class Item {
     public void setUnMedida(String unMedida) {
         this.unMedida = unMedida;
     }
+
+    @Override
+    public String toString() {
+        return descricao + " - " + unMedida + " - R$: " + vlrUnit;
+    }
 }

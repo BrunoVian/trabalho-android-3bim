@@ -11,7 +11,7 @@ import com.example.forcavendasapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnCadItem, btnCadCliente, btnCadEndereco;
+    private Button btnCadItem, btnCadCliente, btnCadEndereco, btnPedido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         btnCadItem = findViewById(R.id.btnCadItem);
         btnCadCliente = findViewById(R.id.btnCadCliente);
         btnCadEndereco = findViewById(R.id.btnCadEndereco);
+        btnPedido = findViewById(R.id.btnNovoPedido);
 
         btnCadEndereco.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CadastroItem.class);
+                startActivity(intent);
+            }
+        });
+
+        btnPedido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Pedido.class);
                 startActivity(intent);
             }
         });

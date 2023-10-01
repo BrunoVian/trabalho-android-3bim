@@ -4,8 +4,8 @@
 
     <padding
         android:left="10dp"
-        android:top="25dp"
+        android:top="10dp"
         android:right="10dp"
-        android:bottom="25dp"
+        android:bottom="10dp"
         /> <!-- Margem de 10dp -->
 </shape>
