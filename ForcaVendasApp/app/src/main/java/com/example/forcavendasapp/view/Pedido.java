@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -21,6 +26,7 @@ import com.example.forcavendasapp.model.Endereco;
 import com.example.forcavendasapp.model.Item;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Pedido extends AppCompatActivity {
 
@@ -29,9 +35,23 @@ public class Pedido extends AppCompatActivity {
     private ArrayList<Cliente> listaClientes;
     private ArrayList<Item> listaItems;
 
-    private TextView tvQntItem;
+    private ArrayList<Item> listaItemsSelecionados = new ArrayList<>();
+
+    private LinearLayout llAPrazo;
+    private TextView tvQntItem, tvTotalItensLista, tvTotal, tvTitleParcelas, tvParcelas;
 
     private RecyclerView rvListaItems;
+    private Button btGerarParcelas;
+    private EditText edQuantParcelas;
+
+    private RadioGroup rgFormaPgt;
+
+    private RadioButton rbAVista, rbAPrazo;
+
+    private double valorTotal = 0;
+    private double valorTotalCondicao = 0;
+    private double valorFrete = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +63,64 @@ public class Pedido extends AppCompatActivity {
         spItem = findViewById(R.id.spItem);
         rvListaItems = findViewById(R.id.rvItems);
         tvQntItem = findViewById(R.id.tvQntItem);
+        tvTotalItensLista = findViewById(R.id.tvTotalLista);
+        rbAPrazo = findViewById(R.id.rbAPrazo);
+        rbAVista = findViewById(R.id.rbAVista);
+        tvTotal = findViewById(R.id.tvTotal);
+        llAPrazo = findViewById(R.id.llAPrazo);
+        btGerarParcelas = findViewById(R.id.btGerarParcelas);
+        edQuantParcelas = findViewById(R.id.edQuantParcelas);
+        tvTitleParcelas = findViewById(R.id.tvTitleParcelas);
+        tvParcelas = findViewById(R.id.tvParcelas);
+        rgFormaPgt = findViewById(R.id.rgFormaPgt);
+
+
+        rgFormaPgt.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                edQuantParcelas.setText(null);
+
+                if (rbAVista.isChecked()) {
+                    llAPrazo.setVisibility(View.GONE);
+                    tvTitleParcelas.setVisibility(View.GONE);
+                    tvParcelas.setVisibility(View.GONE);
+                    calculaTotalPedidoCondicoes();
+                    tvParcelas.setText("");
+                } else if (rbAPrazo.isChecked()) {
+                    llAPrazo.setVisibility(View.VISIBLE);
+                    tvTitleParcelas.setVisibility(View.VISIBLE);
+                    tvParcelas.setVisibility(View.VISIBLE);
+                    calculaTotalPedidoCondicoes();
+                }
+            }
+        });
+
+        btGerarParcelas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int qntParcelas = Integer.parseInt(edQuantParcelas.getText().toString());
+
+                if (qntParcelas == 0) {
+                    edQuantParcelas.setError("Informe uma quantidade de parcelas válidas.");
+                } else {
+                    Double valorParcela = valorTotalCondicao / qntParcelas;
+
+                    String parcelas = "";
+
+                    for (int i = 0; i < qntParcelas; i++) {
+                        parcelas += "Parcela " + (i + 1) + " - R$ - " + valorParcela + "\n";
+                    }
+
+                    tvParcelas.setText(parcelas);
+                    parcelas = "";
+                }
+
+            }
+        });
+
+        Item selecioneItem = new Item();
+        selecioneItem.setDescricao("Selecione um Item");
 
         EnderecoController enderecoController = new EnderecoController(this);
         ClienteController clienteController = new ClienteController(this);
@@ -51,6 +129,9 @@ public class Pedido extends AppCompatActivity {
         listaEnderecos = enderecoController.findAllEndereco();
         listaClientes = clienteController.findAllCliente();
         listaItems = itemController.findAllItem();
+
+        listaItems.add(0, selecioneItem);
+
 
         ArrayAdapter<Endereco> adapterEndereco = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listaEnderecos);
         adapterEndereco.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -65,12 +146,18 @@ public class Pedido extends AppCompatActivity {
         spCliente.setAdapter(adapterCliente);
         spItem.setAdapter(adapterItem);
 
+
         spItem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Item itemSelecionado = (Item) spItem.getSelectedItem();
-                listaItems.add(itemSelecionado);
-                atualizarListaItems();
+                if (position > 0) {
+                    Item itemSelecionado = (Item) spItem.getItemAtPosition(position);
+                    listaItemsSelecionados.add(itemSelecionado);
+                    atualizarListaItems();
+                    calculaTotalPedido();
+                    calculaTotalPedidoCondicoes();
+                    spItem.setSelection(0);
+                }
             }
 
             @Override
@@ -79,21 +166,61 @@ public class Pedido extends AppCompatActivity {
             }
         });
 
+
+        com.example.forcavendasapp.model.Pedido nvPedido = new com.example.forcavendasapp.model.Pedido();
+
+        Cliente cliente = (Cliente) spCliente.getSelectedItem();
+
+        nvPedido.setCodPessoa(Integer.valueOf(String.valueOf(cliente.getCodigo())));
+        nvPedido.setItens(listaItemsSelecionados);
+        nvPedido.setVlrTotal(valorTotalCondicao);
+
     }
 
     private void atualizarListaItems() {
-        ItemListAdapter adapter = new ItemListAdapter(listaItems, this);
+        ItemListAdapter adapter = new ItemListAdapter(listaItemsSelecionados, this);
         rvListaItems.setLayoutManager(new LinearLayoutManager(this));
 
         rvListaItems.setAdapter(adapter);
-        if(adapter.getItemCount()>1){
+        if (adapter.getItemCount() > 1) {
             tvQntItem.setText(adapter.getItemCount() + " itens selecionados");
         } else {
             tvQntItem.setText(adapter.getItemCount() + " item selecionado");
         }
     }
 
+    private void calculaTotalPedido() {
 
+        valorTotal = 0;
+
+        for (Item listaItemsSelecionado : listaItemsSelecionados) {
+            valorTotal += listaItemsSelecionado.getVlrUnit();
+        }
+
+        valorTotal += valorFrete;
+
+        tvTotalItensLista.setText("Total dos Itens R$ " + valorTotal);
+
+
+    }
+
+    private void calculaTotalPedidoCondicoes() {
+
+        valorTotalCondicao = 0;
+
+        if (rbAVista.isChecked()) {
+            valorTotalCondicao = valorTotal - (valorTotal * 0.05);
+        } else if (rbAPrazo.isChecked()) {
+            valorTotalCondicao = valorTotal + (valorTotal * 0.05);
+        }
+
+        if (valorTotalCondicao == 0) {
+            tvTotal.setText("Selecione uma condição.");
+        } else {
+            tvTotal.setText("R$ " + valorTotalCondicao);
+        }
+
+    }
 
 
 }

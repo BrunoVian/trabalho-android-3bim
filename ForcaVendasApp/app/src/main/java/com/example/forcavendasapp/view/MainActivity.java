@@ -6,8 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.forcavendasapp.R;
+import com.example.forcavendasapp.controller.ClienteController;
+import com.example.forcavendasapp.controller.EnderecoController;
+import com.example.forcavendasapp.controller.ItemController;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
         btnCadEndereco = findViewById(R.id.btnCadEndereco);
         btnPedido = findViewById(R.id.btnNovoPedido);
 
+        EnderecoController enderecoController = new EnderecoController(this);
+        ClienteController clienteController = new ClienteController(this);
+        ItemController itemController = new ItemController(this);
+
         btnCadEndereco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,8 +43,13 @@ public class MainActivity extends AppCompatActivity {
         btnCadCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CadastroCliente.class);
-                startActivity(intent);
+
+                if (enderecoController.findAllEndereco().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Atenção! Falta Cadastrar Endereços Para Continuar!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, CadastroCliente.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -51,8 +64,13 @@ public class MainActivity extends AppCompatActivity {
         btnPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Pedido.class);
-                startActivity(intent);
+
+                if (enderecoController.findAllEndereco().isEmpty() || clienteController.findAllCliente().isEmpty() || itemController.findAllItem().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Atenção! Faltam Cadastros Para Continuar", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, Pedido.class);
+                    startActivity(intent);
+                }
             }
         });
 

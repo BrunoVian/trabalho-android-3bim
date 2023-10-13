@@ -51,6 +51,13 @@ public class Item {
 
     @Override
     public String toString() {
-        return descricao + " - " + unMedida + " - R$: " + vlrUnit;
+
+        if(unMedida == null || vlrUnit == 0){
+            return descricao;
+        } else {
+            return descricao + " - " + unMedida + " - R$: " + vlrUnit;
+
+        }
+
     }
 }

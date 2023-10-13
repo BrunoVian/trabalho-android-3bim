@@ -41,7 +41,6 @@ public class PedidoDao implements GenericDao<Pedido> {
             ContentValues valores = new ContentValues();
             valores.put("CODIGO", obj.getCodigo());
             valores.put("CODPESSOA", obj.getCodPessoa());
-            valores.put("VLRDESCONTO", obj.getVlrDesconto());
             valores.put("VLRTOTAL", obj.getVlrTotal());
 
             return bd.insert(tableName, null, valores);
@@ -57,7 +56,6 @@ public class PedidoDao implements GenericDao<Pedido> {
             ContentValues valores = new ContentValues();
             valores.put("CODIGO", obj.getCodigo());
             valores.put("CODPESSOA", obj.getCodPessoa());
-            valores.put("VLRDESCONTO", obj.getVlrDesconto());
             valores.put("VLRTOTAL", obj.getVlrTotal());
 
             String[] identificador = {String.valueOf(obj.getCodigo())};
@@ -89,7 +87,6 @@ public class PedidoDao implements GenericDao<Pedido> {
                     Pedido pedido = new Pedido();
                     pedido.setCodigo(cursor.getInt(0));
                     pedido.setCodPessoa(cursor.getInt(1));
-                    pedido.setVlrDesconto(cursor.getDouble(2));
                     pedido.setVlrTotal(cursor.getDouble(3));
 
                     // Aqui você precisa obter a lista de PedidoItem associados a este Pedido
@@ -112,7 +109,6 @@ public class PedidoDao implements GenericDao<Pedido> {
                 Pedido pedido = new Pedido();
                 pedido.setCodigo(cursor.getInt(0));
                 pedido.setCodPessoa(cursor.getInt(1));
-                pedido.setVlrDesconto(cursor.getDouble(2));
                 pedido.setVlrTotal(cursor.getDouble(3));
 
                 // Aqui você precisa obter a lista de PedidoItem associados a este Pedido

@@ -70,6 +70,6 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Nome: " + nome + " - CPF: " + cpf;
+        return nome + " - CPF: " + cpf;
     }
 }

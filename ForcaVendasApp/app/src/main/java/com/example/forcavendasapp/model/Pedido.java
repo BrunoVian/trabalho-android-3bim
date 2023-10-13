@@ -7,17 +7,15 @@ public class Pedido {
     private int codigo;
     private int codPessoa;
     private List<Item> itens;
-    private double vlrDesconto;
     private double vlrTotal;
 
     public Pedido() {
     }
 
-    public Pedido(int codigo, int codPessoa, List<Item> itens, double vlrDesconto, double vlrTotal) {
+    public Pedido(int codigo, int codPessoa, List<Item> itens, double vlrTotal) {
         this.codigo = codigo;
         this.codPessoa = codPessoa;
         this.itens = itens;
-        this.vlrDesconto = vlrDesconto;
         this.vlrTotal = vlrTotal;
     }
 
@@ -43,14 +41,6 @@ public class Pedido {
 
     public void setItens(List<Item> itens) {
         this.itens = itens;
-    }
-
-    public double getVlrDesconto() {
-        return vlrDesconto;
-    }
-
-    public void setVlrDesconto(double vlrDesconto) {
-        this.vlrDesconto = vlrDesconto;
     }
 
     public double getVlrTotal() {
