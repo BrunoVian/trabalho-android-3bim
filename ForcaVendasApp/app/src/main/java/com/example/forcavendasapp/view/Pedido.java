@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.forcavendasapp.R;
 import com.example.forcavendasapp.adapter.ItemListAdapter;
@@ -38,10 +40,10 @@ public class Pedido extends AppCompatActivity {
     private ArrayList<Item> listaItemsSelecionados = new ArrayList<>();
 
     private LinearLayout llAPrazo;
-    private TextView tvQntItem, tvTotalItensLista, tvTotal, tvTitleParcelas, tvParcelas;
+    private TextView tvQntItem, tvTotalItensLista, tvTotal, tvTitleParcelas, tvParcelas, tvTotalFrete;
 
     private RecyclerView rvListaItems;
-    private Button btGerarParcelas;
+    private Button btGerarParcelas, btSalvar, btCancelar;
     private EditText edQuantParcelas;
 
     private RadioGroup rgFormaPgt;
@@ -73,7 +75,9 @@ public class Pedido extends AppCompatActivity {
         tvTitleParcelas = findViewById(R.id.tvTitleParcelas);
         tvParcelas = findViewById(R.id.tvParcelas);
         rgFormaPgt = findViewById(R.id.rgFormaPgt);
-
+        tvTotalFrete = findViewById(R.id.tvTotalFrete);
+        btSalvar = findViewById(R.id.btnSalvar);
+        btCancelar = findViewById(R.id.btnCancelar);
 
         rgFormaPgt.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -122,6 +126,12 @@ public class Pedido extends AppCompatActivity {
         Item selecioneItem = new Item();
         selecioneItem.setDescricao("Selecione um Item");
 
+        Endereco selecioneEndereco = new Endereco();
+        selecioneEndereco.setCidade("Selecione um Endereço");
+
+        Cliente selecioneCliente = new Cliente();
+        selecioneCliente.setNome("Selecione um Cliente");
+
         EnderecoController enderecoController = new EnderecoController(this);
         ClienteController clienteController = new ClienteController(this);
         ItemController itemController = new ItemController(this);
@@ -131,6 +141,8 @@ public class Pedido extends AppCompatActivity {
         listaItems = itemController.findAllItem();
 
         listaItems.add(0, selecioneItem);
+        listaEnderecos.add(0, selecioneEndereco);
+        listaClientes.add(0, selecioneCliente);
 
 
         ArrayAdapter<Endereco> adapterEndereco = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listaEnderecos);
@@ -145,6 +157,37 @@ public class Pedido extends AppCompatActivity {
         spEndereco.setAdapter(adapterEndereco);
         spCliente.setAdapter(adapterCliente);
         spItem.setAdapter(adapterItem);
+
+        Endereco enderecoSelecionado = (Endereco) spEndereco.getSelectedItem();
+
+        spEndereco.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Endereco enderecoSelecionado = (Endereco) spEndereco.getItemAtPosition(position);
+                System.out.println("Endereco: " + enderecoSelecionado.getCidade());
+                if(position > 1){
+                    if ("Toledo".equals(enderecoSelecionado.getCidade())) {
+                        valorFrete = 0;
+                        tvTotalFrete.setText("Frete Grátis");
+                    } else {
+                        valorFrete = 20;
+                        tvTotalFrete.setText("Frete: R$: 20,00");
+                    }
+                    calculaTotalPedido();
+                    calculaTotalPedidoCondicoes();
+                } else {
+                    valorFrete = 0;
+                    calculaTotalPedido();
+                    calculaTotalPedidoCondicoes();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         spItem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -166,14 +209,21 @@ public class Pedido extends AppCompatActivity {
             }
         });
 
+        btSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                salvarPedido();
+            }
+        });
 
-        com.example.forcavendasapp.model.Pedido nvPedido = new com.example.forcavendasapp.model.Pedido();
+        btCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Pedido.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        Cliente cliente = (Cliente) spCliente.getSelectedItem();
-
-        nvPedido.setCodPessoa(Integer.valueOf(String.valueOf(cliente.getCodigo())));
-        nvPedido.setItens(listaItemsSelecionados);
-        nvPedido.setVlrTotal(valorTotalCondicao);
 
     }
 
@@ -197,8 +247,6 @@ public class Pedido extends AppCompatActivity {
             valorTotal += listaItemsSelecionado.getVlrUnit();
         }
 
-        valorTotal += valorFrete;
-
         tvTotalItensLista.setText("Total dos Itens R$ " + valorTotal);
 
 
@@ -209,9 +257,9 @@ public class Pedido extends AppCompatActivity {
         valorTotalCondicao = 0;
 
         if (rbAVista.isChecked()) {
-            valorTotalCondicao = valorTotal - (valorTotal * 0.05);
+            valorTotalCondicao = valorTotal - (valorTotal * 0.05) + valorFrete;
         } else if (rbAPrazo.isChecked()) {
-            valorTotalCondicao = valorTotal + (valorTotal * 0.05);
+            valorTotalCondicao = valorTotal + (valorTotal * 0.05) + valorFrete;
         }
 
         if (valorTotalCondicao == 0) {
@@ -222,5 +270,32 @@ public class Pedido extends AppCompatActivity {
 
     }
 
+    private void salvarPedido() {
+
+
+
+        if(listaItemsSelecionados.isEmpty()){
+            Toast.makeText(this, "Informe os itens", Toast.LENGTH_SHORT).show();
+        }
+        if(spCliente.getSelectedItemPosition() == 0){
+            Toast.makeText(this, "Informe o cliente", Toast.LENGTH_SHORT).show();
+        }
+        if(spEndereco.getSelectedItemPosition() == 0){
+            Toast.makeText(this, "Informe o Endereço de Entrega", Toast.LENGTH_SHORT).show();
+        }
+        if(valorTotalCondicao == 0){
+            Toast.makeText(this, "Selecione a Condição de Pagamento", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            com.example.forcavendasapp.model.Pedido nvPedido = new com.example.forcavendasapp.model.Pedido();
+
+            Cliente cliente = (Cliente) spCliente.getSelectedItem();
+
+            nvPedido.setCodPessoa(Integer.valueOf(String.valueOf(cliente.getCodigo())));
+            nvPedido.setItens(listaItemsSelecionados);
+            nvPedido.setVlrTotal(valorTotalCondicao);
+        }
+
+    }
 
 }

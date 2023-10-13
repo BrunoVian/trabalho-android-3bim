@@ -70,6 +70,11 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return nome + " - CPF: " + cpf;
+        if (cpf == null) {
+            return nome;
+        } else {
+            return nome + " - CPF: " + cpf;
+        }
+
     }
 }

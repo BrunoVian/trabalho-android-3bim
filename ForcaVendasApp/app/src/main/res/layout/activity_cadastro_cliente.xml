@@ -24,6 +24,8 @@
             android:layout_marginTop="10dp"
             android:textSize="25dp"
             android:text="Novo Cliente"
+            android:background="@drawable/titulo"
+            android:textColor="@color/white"
             android:layout_marginBottom="25dp"/>
 
         <TextView

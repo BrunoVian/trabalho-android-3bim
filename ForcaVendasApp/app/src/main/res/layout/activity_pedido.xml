@@ -17,21 +17,29 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:text="Novo Pedido"
-            android:textSize="25dp" />
-
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/fundo"
             android:orientation="vertical"
             tools:context=".view.Pedido">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/titulo"
+                android:text="Novo Pedido"
+                android:textSize="25dp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -116,7 +124,16 @@
                     android:gravity="end"
                     android:text="Total dos Itens R$ 0,00" />
 
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:text="Dados de Entrega"
+                    android:textColor="@color/white"
+                    android:background="@drawable/titulo"
+                    android:textStyle="bold"
+                    android:textSize="20dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -135,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:gravity="end"
-                    android:text="Total do Frete R$ 0,00" />
+                    android:text="" />
 
 
                 <TextView
@@ -144,7 +161,9 @@
                     android:layout_marginBottom="10dp"
                     android:gravity="center"
                     android:text="Dados de Cobrança"
+                    android:background="@drawable/titulo"
                     android:textStyle="bold"
+                    android:textColor="@color/white"
                     android:textSize="20dp" />
 
 
@@ -262,7 +281,7 @@
                 </LinearLayout>
 
             </LinearLayout>
-
+            </LinearLayout>
         </ScrollView>
 
     </LinearLayout>

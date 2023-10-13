@@ -79,6 +79,10 @@ public class Endereco {
 
     @Override
     public String toString() {
-        return "Cód" + codigo + " - Logradouro: " + logradouro;
+        if (logradouro == null) {
+            return cidade;
+        } else {
+            return logradouro + ", " + numero + "° " + cidade + "/" + uf;
+        }
     }
 }
