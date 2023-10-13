@@ -56,7 +56,6 @@ public class Item {
             return descricao;
         } else {
             return descricao + " - " + unMedida + " - R$: " + vlrUnit;
-
         }
 
     }

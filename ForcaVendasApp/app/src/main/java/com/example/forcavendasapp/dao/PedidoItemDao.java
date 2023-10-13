@@ -9,113 +9,116 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.forcavendasapp.helper.SQLiteDataHelper;
-import com.example.forcavendasapp.model.Pedido;
+import com.example.forcavendasapp.model.PedidoItem;
 
 import java.util.ArrayList;
 
-public class PedidoDao implements GenericDao<Pedido> {
+public class PedidoItemDao implements GenericDao<PedidoItem> {
+
 
     private SQLiteOpenHelper openHelper;
-    private SQLiteDatabase bd;
-    private String[] colunas = {"CODIGO", "CODPESSOA", "CODENDERECO", "VLRTOTAL"};
-    private String tableName = "PEDIDO";
-    private Context context;
-    private static PedidoDao instancia;
 
-    private PedidoDao(Context context) {
+    private SQLiteDatabase bd;
+
+    private String[] colunas = {"CODIGO", "CODPEDIDO", "CODITEM"};
+
+    private String tableName = "PEDIDOITEM";
+
+    private Context context;
+
+    private static PedidoItemDao instancia;
+
+    private PedidoItemDao(Context context) {
         this.context = context;
         openHelper = new SQLiteDataHelper(this.context, "UNIPAR", null, 1);
+
         bd = openHelper.getWritableDatabase();
     }
 
-    public static PedidoDao getInstancia(Context context) {
+    public static PedidoItemDao getInstancia(Context context) {
         if (instancia == null)
-            return instancia = new PedidoDao(context);
+            return instancia = new PedidoItemDao(context);
         else
             return instancia;
     }
 
+
     @Override
-    public long insert(Pedido obj) {
+    public long insert(PedidoItem obj) {
         try {
             ContentValues valores = new ContentValues();
-            valores.put("CODIGO", obj.getCodigo());
-            valores.put("CODPESSOA", obj.getCodPessoa());
-            valores.put("CODENDERECO", obj.getCodEndereco());
-            valores.put("VLRTOTAL", obj.getVlrTotal());
+            valores.put("CODPEDIDO", obj.getCodigoPedido());
+            valores.put("CODITEM", obj.getCodigoItem());
 
             return bd.insert(tableName, null, valores);
         } catch (SQLException ex) {
-            Log.e("ERRO", "PedidoDao.insert(): " + ex.getMessage());
+            Log.e("ERRO", "PedidoItemDao.insert(): " + ex.getMessage());
         }
         return -1;
     }
 
     @Override
-    public long update(Pedido obj) {
+    public long update(PedidoItem obj) {
         try {
             ContentValues valores = new ContentValues();
             valores.put("CODIGO", obj.getCodigo());
-            valores.put("CODPESSOA", obj.getCodPessoa());
-            valores.put("CODENDERECO", obj.getCodEndereco());
-            valores.put("VLRTOTAL", obj.getVlrTotal());
+            valores.put("CODPEDIDO", obj.getCodigoPedido());
+            valores.put("CODITEM", obj.getCodigoItem());
 
             String[] identificador = {String.valueOf(obj.getCodigo())};
             return bd.update(tableName, valores, "CODIGO = ?", identificador);
         } catch (SQLException ex) {
-            Log.e("ERRO", "PedidoDao.update(): " + ex.getMessage());
+            Log.e("ERRO", "PedidoItemDao.update(): " + ex.getMessage());
         }
         return -1;
     }
 
     @Override
-    public long delete(Pedido obj) {
+    public long delete(PedidoItem obj) {
         try {
             String[] identification = {String.valueOf(obj.getCodigo())};
             return bd.delete(tableName, "CODIGO = ?", identification);
         } catch (SQLException ex) {
-            Log.e("ERRO", "PedidoDao.delete(): " + ex.getMessage());
+            Log.e("ERRO", "PedidoItemDao.delete(): " + ex.getMessage());
         }
         return -1;
     }
 
     @Override
-    public ArrayList<Pedido> getAll() {
-        ArrayList<Pedido> lista = new ArrayList<>();
+    public ArrayList<PedidoItem> getAll() {
+        ArrayList<PedidoItem> lista = new ArrayList<>();
         try {
             Cursor cursor = bd.query(tableName, colunas, null, null, null, null, "CODIGO asc");
             if (cursor.moveToFirst()) {
                 do {
-                    Pedido pedido = new Pedido();
-                    pedido.setCodigo(cursor.getInt(0));
-                    pedido.setCodPessoa(cursor.getInt(1));
-                    pedido.setCodEndereco(cursor.getInt(2));
-                    pedido.setVlrTotal(cursor.getDouble(3));
+                    PedidoItem pedidoItem = new PedidoItem();
+                    pedidoItem.setCodigo(cursor.getInt(0));
+                    pedidoItem.setCodigoPedido(cursor.getInt(1));
+                    pedidoItem.setCodigoItem(cursor.getInt(2));
 
-                    lista.add(pedido);
+                    lista.add(pedidoItem);
                 } while (cursor.moveToNext());
             }
         } catch (SQLException ex) {
-            Log.e("ERRO", "PedidoDao.getAll(): " + ex.getMessage());
+            Log.e("ERRO", "PedidoItemDao.getAll(): " + ex.getMessage());
         }
         return lista;
     }
 
     @Override
-    public Pedido getById(int id) {
+    public PedidoItem getById(int id) {
         try {
             Cursor cursor = bd.query(tableName, colunas, "CODIGO = ?", null, null, null, "CODIGO asc");
             if (cursor.moveToFirst()) {
-                Pedido pedido = new Pedido();
-                pedido.setCodigo(cursor.getInt(0));
-                pedido.setCodPessoa(cursor.getInt(1));
-                pedido.setCodEndereco(cursor.getInt(2));
-                pedido.setVlrTotal(cursor.getDouble(3));
+                PedidoItem pedidoItem = new PedidoItem();
+                pedidoItem.setCodigo(cursor.getInt(0));
+                pedidoItem.setCodigoPedido(cursor.getInt(1));
+                pedidoItem.setCodigoItem(cursor.getInt(2));
 
-                return pedido;
+                return pedidoItem;
             }
         } catch (SQLException ex) {
-            Log.e("ERRO", "PedidoDao.getById(): " + ex.getMessage());
+            Log.e("ERRO", "PedidoItemDao.getById(): " + ex.getMessage());
         }
         return null;
     }

@@ -9,14 +9,25 @@ public class Pedido {
     private List<Item> itens;
     private double vlrTotal;
 
+    private int codEndereco;
+
     public Pedido() {
     }
 
-    public Pedido(int codigo, int codPessoa, List<Item> itens, double vlrTotal) {
+    public Pedido(int codigo, int codPessoa, List<Item> itens, double vlrTotal, int codEndereco) {
         this.codigo = codigo;
         this.codPessoa = codPessoa;
         this.itens = itens;
         this.vlrTotal = vlrTotal;
+        this.codEndereco = codEndereco;
+    }
+
+    public int getCodEndereco() {
+        return codEndereco;
+    }
+
+    public void setCodEndereco(int codEndereco) {
+        this.codEndereco = codEndereco;
     }
 
     public int getCodigo() {
@@ -49,5 +60,16 @@ public class Pedido {
 
     public void setVlrTotal(double vlrTotal) {
         this.vlrTotal = vlrTotal;
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "codigo=" + codigo +
+                ", codPessoa=" + codPessoa +
+                ", itens=" + itens +
+                ", vlrTotal=" + vlrTotal +
+                ", codEndereco=" + codEndereco +
+                '}';
     }
 }

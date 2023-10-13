@@ -23,6 +23,7 @@ import com.example.forcavendasapp.adapter.ItemListAdapter;
 import com.example.forcavendasapp.controller.ClienteController;
 import com.example.forcavendasapp.controller.EnderecoController;
 import com.example.forcavendasapp.controller.ItemController;
+import com.example.forcavendasapp.controller.PedidoController;
 import com.example.forcavendasapp.model.Cliente;
 import com.example.forcavendasapp.model.Endereco;
 import com.example.forcavendasapp.model.Item;
@@ -44,7 +45,7 @@ public class Pedido extends AppCompatActivity {
 
     private RecyclerView rvListaItems;
     private Button btGerarParcelas, btSalvar, btCancelar;
-    private EditText edQuantParcelas;
+    private EditText edQuantParcelas, edCodigo;
 
     private RadioGroup rgFormaPgt;
 
@@ -78,6 +79,7 @@ public class Pedido extends AppCompatActivity {
         tvTotalFrete = findViewById(R.id.tvTotalFrete);
         btSalvar = findViewById(R.id.btnSalvar);
         btCancelar = findViewById(R.id.btnCancelar);
+        edCodigo = findViewById(R.id.edCodigo);
 
         rgFormaPgt.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -272,8 +274,6 @@ public class Pedido extends AppCompatActivity {
 
     private void salvarPedido() {
 
-
-
         if(listaItemsSelecionados.isEmpty()){
             Toast.makeText(this, "Informe os itens", Toast.LENGTH_SHORT).show();
         }
@@ -290,10 +290,27 @@ public class Pedido extends AppCompatActivity {
             com.example.forcavendasapp.model.Pedido nvPedido = new com.example.forcavendasapp.model.Pedido();
 
             Cliente cliente = (Cliente) spCliente.getSelectedItem();
+            Endereco endereco = (Endereco) spEndereco.getSelectedItem();
 
             nvPedido.setCodPessoa(Integer.valueOf(String.valueOf(cliente.getCodigo())));
+            nvPedido.setCodEndereco(Integer.valueOf(String.valueOf(endereco.getCodigo())));
             nvPedido.setItens(listaItemsSelecionados);
             nvPedido.setVlrTotal(valorTotalCondicao);
+
+            System.out.println(nvPedido);
+
+        }
+
+    }
+
+
+    private void buscarPedido(){
+
+        try{
+            PedidoController pedidoController = new PedidoController(this);
+            pedidoController.findByIdPedido(Integer.valueOf(edCodigo.getText().toString()));
+        } catch (Exception ex){
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/titulo"
+        android:text="Novo Pedido"
+        android:textSize="25dp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/edCodigo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/bordered_background"
+                android:hint="Informe o codigo..."
+                android:inputType="text" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_customizado"
+                android:text="Buscar Pedido"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selecione o Cliente" />
+
+        <Spinner
+            android:id="@+id/spCliente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/spinner_custom"></Spinner>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selecione o Item" />
+
+        <Spinner
+            android:id="@+id/spItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/spinner_custom"></Spinner>
+
+        <include layout="@layout/topo_item_list"></include>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lnLine"
+            android:background="@color/white"/>
+
+        <TextView
+            android:id="@+id/tvQntItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="end"
+            android:text="nenhum item adicionado" />
+
+        <TextView
+            android:id="@+id/tvTotalLista"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="end"
+            android:text="Total dos Itens R$ 0,00" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="Dados de Entrega"
+            android:textColor="@color/white"
+            android:background="@drawable/titulo"
+            android:textStyle="bold"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selecione o endereço de entrega" />
+
+        <Spinner
+            android:id="@+id/spEnderecoEntrega"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_custom"/>
+
+        <TextView
+            android:id="@+id/tvTotalFrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="end"
+            android:text="" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="Dados de Cobrança"
+            android:background="@drawable/titulo"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selecione a Condição de Pagamento" />
+
+        <RadioGroup
+            android:id="@+id/rgFormaPgt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rbAVista"
+                android:text="A Vista" />
+
+            <RadioButton
+                android:id="@+id/rbAPrazo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="A Prazo" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/llAPrazo"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+
+            <EditText
+                android:id="@+id/edQuantParcelas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bordered_background"                        android:hint="Informe as Parcelas"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/btGerarParcelas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_customizado"
+                android:text="Gerar Parcelas"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Valor Total do Pedido" />
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="R$ "
+            android:background="@drawable/bordered_background" />
+
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tvTitleParcelas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Parcelas" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tvParcelas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Parcela 1 - R$ 00,00"
+            android:background="@drawable/bordered_background" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnCancelar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/vermelho"
+                android:text="Cancelar" />
+
+            <Button
+                android:id="@+id/btnSalvar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/verde"
+                android:text="Concluir" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
