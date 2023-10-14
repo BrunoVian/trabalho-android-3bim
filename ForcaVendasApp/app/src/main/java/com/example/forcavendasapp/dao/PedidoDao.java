@@ -24,7 +24,7 @@ public class PedidoDao implements GenericDao<Pedido> {
 
     private PedidoDao(Context context) {
         this.context = context;
-        openHelper = new SQLiteDataHelper(this.context, "UNIPAR", null, 1);
+        openHelper = new SQLiteDataHelper(this.context, "UNIPAR2", null, 1);
         bd = openHelper.getWritableDatabase();
     }
 
@@ -39,7 +39,6 @@ public class PedidoDao implements GenericDao<Pedido> {
     public long insert(Pedido obj) {
         try {
             ContentValues valores = new ContentValues();
-            valores.put("CODIGO", obj.getCodigo());
             valores.put("CODPESSOA", obj.getCodPessoa());
             valores.put("CODENDERECO", obj.getCodEndereco());
             valores.put("VLRTOTAL", obj.getVlrTotal());
@@ -104,7 +103,7 @@ public class PedidoDao implements GenericDao<Pedido> {
     @Override
     public Pedido getById(int id) {
         try {
-            Cursor cursor = bd.query(tableName, colunas, "CODIGO = ?", null, null, null, "CODIGO asc");
+            Cursor cursor = bd.query(tableName, colunas, "CODIGO = ?", new String[] { String.valueOf(id) }, null, null, "CODIGO asc");
             if (cursor.moveToFirst()) {
                 Pedido pedido = new Pedido();
                 pedido.setCodigo(cursor.getInt(0));

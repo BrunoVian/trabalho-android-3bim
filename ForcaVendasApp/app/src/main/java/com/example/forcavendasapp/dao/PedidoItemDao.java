@@ -30,7 +30,7 @@ public class PedidoItemDao implements GenericDao<PedidoItem> {
 
     private PedidoItemDao(Context context) {
         this.context = context;
-        openHelper = new SQLiteDataHelper(this.context, "UNIPAR", null, 1);
+        openHelper = new SQLiteDataHelper(this.context, "UNIPAR2", null, 1);
 
         bd = openHelper.getWritableDatabase();
     }

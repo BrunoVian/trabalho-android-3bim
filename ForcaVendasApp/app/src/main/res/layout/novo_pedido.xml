@@ -44,6 +44,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_customizado"
                 android:text="Buscar Pedido"
+                android:id="@+id/btBuscaPedido"
                 android:textColor="@color/white" />
 
         </LinearLayout>

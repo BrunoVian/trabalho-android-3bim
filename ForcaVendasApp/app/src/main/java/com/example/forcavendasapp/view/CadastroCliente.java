@@ -2,6 +2,7 @@ package com.example.forcavendasapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -51,6 +52,15 @@ public class CadastroCliente extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 salvarCliente();
+            }
+        });
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                limpaCampos();
+                Intent intent = new Intent(CadastroCliente.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 

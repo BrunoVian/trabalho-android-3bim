@@ -35,7 +35,7 @@ public class ItemDao implements GenericDao<Item> {
     private ItemDao(Context context) {
         this.context = context;
         //Carregando base de dados
-        openHelper = new SQLiteDataHelper(this.context, "UNIPAR", null, 1);
+        openHelper = new SQLiteDataHelper(this.context, "UNIPAR2", null, 1);
 
         //Atribuindo a base de dados a variavel e dando permissão para escrever nas tabelas
         bd = openHelper.getWritableDatabase();

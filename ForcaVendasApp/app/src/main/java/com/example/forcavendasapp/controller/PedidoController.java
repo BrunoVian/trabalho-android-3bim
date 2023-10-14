@@ -59,8 +59,11 @@ public class PedidoController {
             throw new Exception("Informe um valor maior que zero.");
         } else {
             Pedido pedido = PedidoDao.getInstancia(context).getById(id);
+
+            System.out.println(pedido);
+
             if (pedido == null) {
-                throw new Exception("Pedido não encontrado.");
+                throw new Exception("Pedido n° " + id + "não encontrado.");
             } else {
                 return pedido;
             }

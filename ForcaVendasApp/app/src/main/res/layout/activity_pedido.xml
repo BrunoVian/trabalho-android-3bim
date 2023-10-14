@@ -38,11 +38,10 @@
 
                 <include
                     layout="@layout/busca_pedido"
-                    android:visibility="visible"
-                    android:id="@+id/bu"></include>
+                    android:visibility="gone"
+                    android:id="@+id/busca_pedido"></include>
 
             </LinearLayout>
-
 
         </ScrollView>
 

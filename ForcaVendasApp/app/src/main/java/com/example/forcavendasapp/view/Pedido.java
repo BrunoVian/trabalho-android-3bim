@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,29 +29,25 @@ import com.example.forcavendasapp.model.Cliente;
 import com.example.forcavendasapp.model.Endereco;
 import com.example.forcavendasapp.model.Item;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Pedido extends AppCompatActivity {
 
+    private LinearLayout llNvPedido, llBuscaPedido;
     private Spinner spEndereco, spCliente, spItem;
     private ArrayList<Endereco> listaEnderecos;
     private ArrayList<Cliente> listaClientes;
     private ArrayList<Item> listaItems;
-
     private ArrayList<Item> listaItemsSelecionados = new ArrayList<>();
-
     private LinearLayout llAPrazo;
-    private TextView tvQntItem, tvTotalItensLista, tvTotal, tvTitleParcelas, tvParcelas, tvTotalFrete;
-
+    private TextView tvQntItem, tvTotalItensLista, tvTotal, tvTitleParcelas, tvParcelas, tvTotalFrete, clienteTv, enderecoTv, valorTotalTv, codigo;
     private RecyclerView rvListaItems;
-    private Button btGerarParcelas, btSalvar, btCancelar;
+    private Button btGerarParcelas, btSalvar, btCancelar, btBuscaPedido, btVoltar;
     private EditText edQuantParcelas, edCodigo;
-
     private RadioGroup rgFormaPgt;
-
     private RadioButton rbAVista, rbAPrazo;
-
     private double valorTotal = 0;
     private double valorTotalCondicao = 0;
     private double valorFrete = 0;
@@ -80,6 +77,14 @@ public class Pedido extends AppCompatActivity {
         btSalvar = findViewById(R.id.btnSalvar);
         btCancelar = findViewById(R.id.btnCancelar);
         edCodigo = findViewById(R.id.edCodigo);
+        llNvPedido = findViewById(R.id.nvPedido);
+        llBuscaPedido = findViewById(R.id.busca_pedido);
+        btBuscaPedido = findViewById(R.id.btBuscaPedido);
+        btVoltar = findViewById(R.id.btnVoltar);
+        clienteTv = findViewById(R.id.cliente);
+        enderecoTv = findViewById(R.id.endereco);
+        valorTotalTv = findViewById(R.id.valorTotal);
+        codigo = findViewById(R.id.codigo);
 
         rgFormaPgt.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -105,21 +110,28 @@ public class Pedido extends AppCompatActivity {
         btGerarParcelas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int qntParcelas = Integer.parseInt(edQuantParcelas.getText().toString());
+                String qntParcela = edQuantParcelas.getText().toString();
 
-                if (qntParcelas == 0) {
-                    edQuantParcelas.setError("Informe uma quantidade de parcelas válidas.");
-                } else {
-                    Double valorParcela = valorTotalCondicao / qntParcelas;
 
-                    String parcelas = "";
+                try{
+                    if (qntParcela.equals(null) || qntParcela.equals("") || qntParcela.equals("0")) {
+                        edQuantParcelas.setError("Informe um valor maior que zero.");
+                    } else {
+                        int qntParcelas = Integer.parseInt(qntParcela);
+                        Double valorParcela = valorTotalCondicao / qntParcelas;
 
-                    for (int i = 0; i < qntParcelas; i++) {
-                        parcelas += "Parcela " + (i + 1) + " - R$ - " + valorParcela + "\n";
+                        String parcelas = "";
+
+                        for (int i = 0; i < qntParcelas; i++) {
+                            parcelas += "Parcela " + (i + 1) + " - R$ - " + valorParcela + "\n";
+                        }
+
+                        tvParcelas.setText(parcelas);
+                        parcelas = "";
+
                     }
-
-                    tvParcelas.setText(parcelas);
-                    parcelas = "";
+                }catch (Exception ex){
+                    Log.e("ERRO CHATO", ex.getMessage());
                 }
 
             }
@@ -160,15 +172,13 @@ public class Pedido extends AppCompatActivity {
         spCliente.setAdapter(adapterCliente);
         spItem.setAdapter(adapterItem);
 
-        Endereco enderecoSelecionado = (Endereco) spEndereco.getSelectedItem();
-
         spEndereco.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Endereco enderecoSelecionado = (Endereco) spEndereco.getItemAtPosition(position);
                 System.out.println("Endereco: " + enderecoSelecionado.getCidade());
-                if(position > 1){
-                    if ("Toledo".equals(enderecoSelecionado.getCidade())) {
+                if (position > 1) {
+                    if ("toledo".equalsIgnoreCase(enderecoSelecionado.getCidade().trim())) {
                         valorFrete = 0;
                         tvTotalFrete.setText("Frete Grátis");
                     } else {
@@ -215,17 +225,49 @@ public class Pedido extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 salvarPedido();
+                limpaCampos();
             }
         });
 
         btCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                limpaCampos();
                 Intent intent = new Intent(Pedido.this, MainActivity.class);
                 startActivity(intent);
             }
         });
 
+        btBuscaPedido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buscarPedido();
+                limpaCampos();
+            }
+        });
+
+        btVoltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llNvPedido.setVisibility(View.VISIBLE);
+                llBuscaPedido.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    private void limpaCampos() {
+
+        edCodigo.setText("");
+        spCliente.setSelection(0);
+        spItem.setSelection(0);
+        listaItemsSelecionados.clear();
+        calculaTotalPedido();
+        calculaTotalPedidoCondicoes();
+        spEndereco.setSelection(0);
+        edQuantParcelas.setText("");
+        tvParcelas.setText("");
+        atualizarListaItems();
 
     }
 
@@ -251,7 +293,6 @@ public class Pedido extends AppCompatActivity {
 
         tvTotalItensLista.setText("Total dos Itens R$ " + valorTotal);
 
-
     }
 
     private void calculaTotalPedidoCondicoes() {
@@ -274,19 +315,18 @@ public class Pedido extends AppCompatActivity {
 
     private void salvarPedido() {
 
-        if(listaItemsSelecionados.isEmpty()){
+        if (listaItemsSelecionados.isEmpty()) {
             Toast.makeText(this, "Informe os itens", Toast.LENGTH_SHORT).show();
         }
-        if(spCliente.getSelectedItemPosition() == 0){
+        if (spCliente.getSelectedItemPosition() == 0) {
             Toast.makeText(this, "Informe o cliente", Toast.LENGTH_SHORT).show();
         }
-        if(spEndereco.getSelectedItemPosition() == 0){
+        if (spEndereco.getSelectedItemPosition() == 0) {
             Toast.makeText(this, "Informe o Endereço de Entrega", Toast.LENGTH_SHORT).show();
         }
-        if(valorTotalCondicao == 0){
+        if (valorTotalCondicao == 0) {
             Toast.makeText(this, "Selecione a Condição de Pagamento", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             com.example.forcavendasapp.model.Pedido nvPedido = new com.example.forcavendasapp.model.Pedido();
 
             Cliente cliente = (Cliente) spCliente.getSelectedItem();
@@ -297,20 +337,57 @@ public class Pedido extends AppCompatActivity {
             nvPedido.setItens(listaItemsSelecionados);
             nvPedido.setVlrTotal(valorTotalCondicao);
 
-            System.out.println(nvPedido);
+            try {
+                PedidoController pedidoController = new PedidoController(this);
+                long codGerado = pedidoController.salvarPedido(nvPedido);
+                Toast.makeText(this, "GERADO PEDIDO N° " + codGerado, Toast.LENGTH_SHORT).show();
+            } catch (Exception ex) {
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
 
         }
 
     }
 
+    private void buscarPedido() {
 
-    private void buscarPedido(){
+        try {
 
-        try{
-            PedidoController pedidoController = new PedidoController(this);
-            pedidoController.findByIdPedido(Integer.valueOf(edCodigo.getText().toString()));
-        } catch (Exception ex){
+            String codigoBusca = edCodigo.getText().toString();
+
+            if (codigoBusca.equals("") || codigoBusca.equals(null)) {
+                edCodigo.setError("Informe um código para pesquisar.");
+            } else {
+
+                PedidoController pedidoController = new PedidoController(this);
+                ClienteController clienteController = new ClienteController(this);
+                EnderecoController enderecoController = new EnderecoController(this);
+
+                com.example.forcavendasapp.model.Pedido buscaPedido = pedidoController.findByIdPedido(Integer.valueOf(edCodigo.getText().toString()));
+
+                Cliente cliente = clienteController.findByIdCliente(buscaPedido.getCodPessoa());
+                Endereco endereco = enderecoController.findByIdEndereco(buscaPedido.getCodEndereco());
+
+                llNvPedido.setVisibility(View.GONE);
+                llBuscaPedido.setVisibility(View.VISIBLE);
+
+                codigo.setText("PEDIDO N° " + String.valueOf(buscaPedido.getCodigo()));
+                clienteTv.setText(cliente.toString());
+                enderecoTv.setText("Endereço: " + endereco.toString());
+
+                DecimalFormat formato = new DecimalFormat("0.00");
+                double numero = buscaPedido.getVlrTotal();
+                String numeroFormatado = formato.format(numero);
+
+                valorTotalTv.setText("Valor Total: R$ " + String.valueOf(numeroFormatado));
+            }
+
+        } catch (Exception ex) {
+
             Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("ERRO", ex.getMessage());
+
         }
 
     }

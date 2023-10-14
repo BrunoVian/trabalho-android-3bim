@@ -35,7 +35,7 @@ public class EnderecoDao implements GenericDao<Endereco> {
     private EnderecoDao(Context context) {
         this.context = context;
         //Carregando base de dados
-        openHelper = new SQLiteDataHelper(this.context, "UNIPAR", null, 1);
+        openHelper = new SQLiteDataHelper(this.context, "UNIPAR2", null, 1);
 
         //Atribuindo a base de dados a variavel e dando permissão para escrever nas tabelas
         bd = openHelper.getWritableDatabase();
@@ -121,7 +121,7 @@ public class EnderecoDao implements GenericDao<Endereco> {
     @Override
     public Endereco getById(int id) {
         try {
-            Cursor cursor = bd.query(tableName, colunas, "CODIGO = ?", null, null, null, "CODIGO asc");
+            Cursor cursor = bd.query(tableName, colunas, "CODIGO = ?", new String[] { String.valueOf(id) }, null, null, "CODIGO asc");
             if (cursor.moveToFirst()) {
                 Endereco endereco = new Endereco();
                 endereco.setCodigo(cursor.getInt(0));
